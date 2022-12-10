@@ -1,2 +1,2 @@
 # description
-A flutter app where you can add Todos, Groceries and many more !
+A flutter app where you can add Todos, grocery list and many more !
