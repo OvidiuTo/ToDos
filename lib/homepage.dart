@@ -1,12 +1,8 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
-import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../model/todo.dart';
+import 'model/todo.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -19,11 +15,9 @@ class _HomepageState extends State<Homepage> {
   final _todoController = TextEditingController();
   List<ToDo> list = <ToDo>[];
   List _foundTodo = [];
-
   var todoLength;
 
   late SharedPreferences sharedPreferences;
-  final _advancedDrawerController = AdvancedDrawerController();
 
   @override
   void initState() {
@@ -42,23 +36,6 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    return AdvancedDrawer(
-      backdropColor: const Color(0xff795548),
-      controller: _advancedDrawerController,
-      animationCurve: Curves.easeInOut,
-      animationDuration: const Duration(milliseconds: 300),
-      animateChildDecoration: true,
-      rtlOpening: false,
-      disabledGestures: false,
-      childDecoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-      ),
-      drawer: drawer(),
-      child: scaffold(),
-    );
-  }
-
-  Widget scaffold() {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xfff6f3f0),
@@ -286,83 +263,9 @@ class _HomepageState extends State<Homepage> {
 
   AppBar appBar() {
     return AppBar(
-      leading: IconButton(
-        onPressed: _handleMenuButtonPressed,
-        icon: ValueListenableBuilder<AdvancedDrawerValue>(
-          valueListenable: _advancedDrawerController,
-          builder: (_, value, __) {
-            return AnimatedSwitcher(
-              duration: Duration(milliseconds: 250),
-              child: Icon(
-                value.visible ? Icons.clear : Icons.menu,
-                size: 40,
-                color: Color(0xff795548),
-                key: ValueKey<bool>(value.visible),
-              ),
-            );
-          },
-        ),
-      ),
       title: searchBox(),
       backgroundColor: const Color(0xfff6f3f0),
     );
-  }
-
-  Drawer drawer() {
-    return Drawer(
-      width: 200,
-      backgroundColor: const Color(0xff795548),
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(color: Color(0xff795548)),
-            child: Material(
-              color: const Color(0xff795548),
-              child: Image.asset(
-                "assets/images/appIcon_brown.png",
-              ),
-            ),
-          ),
-          const ListTile(
-            leading: Icon(
-              Icons.checklist,
-              color: Color(0xfff6f3f0),
-              size: 30,
-            ),
-            title: Text(
-              "Tasks",
-              style: TextStyle(
-                  color: Color(0xfff6f3f0),
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700),
-            ),
-            onTap: null,
-          ),
-          const ListTile(
-            leading: Icon(
-              Icons.local_grocery_store,
-              color: Color(0xfff6f3f0),
-              size: 30,
-            ),
-            title: Text(
-              "Groceries",
-              style: TextStyle(
-                  color: Color(0xfff6f3f0),
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700),
-            ),
-            onTap: null,
-          )
-        ],
-      ),
-    );
-  }
-
-  void _handleMenuButtonPressed() {
-    // NOTICE: Manage Advanced Drawer state through the Controller.
-    _advancedDrawerController.value = AdvancedDrawerValue.visible();
-    _advancedDrawerController.showDrawer();
   }
 
   void _handleToDoChange(ToDo item) {
